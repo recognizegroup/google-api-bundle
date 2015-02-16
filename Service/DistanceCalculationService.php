@@ -1,6 +1,7 @@
 <?php
 namespace Recognize\GoogleApiBundle\Service;
 
+use Recognize\GoogleApiBundle\Entity\LatLng;
 use Recognize\GoogleApiBundle\Entity\Location as Location;
 
 class DistanceCalculationService {
@@ -22,18 +23,10 @@ class DistanceCalculationService {
      */
     public function calculateDistanceInMeters($origin, $destination){
 
-        // Allow both strings and locations
-        if( is_string($origin) ){
-           $this->origin = $this->convertStringToLocation( $origin );
-        } else if( is_a($destination, 'Recognize\GoogleApiBundle\Entity\Location')) {
-            $this->origin = $destination;
-        }
+        // Allow both strings, arrays containing lat long pairs and locations
+        $this->origin = $this->convertDataToLocation( $origin );
+        $this->destination = $this->convertDataToLocation( $destination );
 
-        if( is_string($destination) ){
-            $this->destination = $this->convertStringToLocation( $destination );
-        } else if( is_a($destination, 'Recognize\GoogleApiBundle\Entity\Location')) {
-            $this->destination = $destination;
-        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->generateGoogleApiRequest() );
@@ -69,6 +62,28 @@ class DistanceCalculationService {
     }
 
     /**
+     * Convert a string or an array to a location object
+     *
+     * @param $data
+     */
+    protected function convertDataToLocation( $data ){
+
+        $loc = new Location();
+        if( is_string( $data ) ) {
+            $loc = $this->convertStringToLocation( $data );
+
+        // Convert a LatLng pair to a locatioon object
+        } else if( is_array( $data ) ){
+            $loc = $this->convertArrayToLocation( $data );
+
+        } else if( is_a( $data, 'Recognize\GoogleApiBundle\Entity\Location')) {
+            $loc = $data;
+        }
+
+        return $loc;
+    }
+
+    /**
      * Convert a string to a location
      *
      * @param $string
@@ -77,6 +92,19 @@ class DistanceCalculationService {
     protected function convertStringToLocation( $string ){
         $loc = new Location();
         $loc->setZipcode( $string );
+        return $loc;
+    }
+
+    /**
+     * Convert a string to a location
+     *
+     * @param $string
+     * @return Location
+     */
+    protected function convertArrayToLocation( $latlngpair ){
+        $loc = new Location();
+        $latlng = new LatLng( $latlngpair[0], $latlngpair[1]);
+        $loc->setGeoLocation( $latlng );
         return $loc;
     }
 }
