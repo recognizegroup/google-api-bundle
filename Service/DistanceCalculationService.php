@@ -16,16 +16,28 @@ class DistanceCalculationService {
     /**
      * Calculate the driving distance between two locations
      *
-     * @param Location $origin
-     * @param Location $destination
+     * @param mixed $origin
+     * @param mixed $destination
      * @return int
      */
-    public function calculateDistanceInMeters(Location $origin, Location $destination){
-        $this->origin = $origin;
-        $this->destination = $destination;
+    public function calculateDistanceInMeters($origin, $destination){
+
+        // Allow both strings and locations
+        if( is_string($origin) ){
+           $this->origin = $this->convertStringToLocation( $origin );
+        } else if( is_a($destination, 'Recognize\GoogleApiBundle\Entity\Location')) {
+            $this->origin = $destination;
+        }
+
+        if( is_string($destination) ){
+            $this->destination = $this->convertStringToLocation( $destination );
+        } else if( is_a($destination, 'Recognize\GoogleApiBundle\Entity\Location')) {
+            $this->destination = $destination;
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->generateGoogleApiRequest() );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
@@ -54,5 +66,17 @@ class DistanceCalculationService {
         }
 
         return $url;
+    }
+
+    /**
+     * Convert a string to a location
+     *
+     * @param $string
+     * @return Location
+     */
+    protected function convertStringToLocation( $string ){
+        $loc = new Location();
+        $loc->setZipcode( $string );
+        return $loc;
     }
 }
