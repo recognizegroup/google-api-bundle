@@ -9,6 +9,11 @@
 			"name": "Nick Obermeijer",
 			"email": "nick@recognize.nl",
 			"homepage": "http://www.recognize.nl/"
+		},
+		{
+		  "name": "Kevin te Raa",
+		  "email": "k.teraa@recognize.nl",
+		  "homepage": "http://www.recognize.nl/"
 		}
 	],
 	"require": {

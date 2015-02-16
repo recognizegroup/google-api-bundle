@@ -1,0 +1,3 @@
+services:
+      distance_calculation:
+            class: Recognize\GoogleApiBundle\Service\DistanceCalculationService;
