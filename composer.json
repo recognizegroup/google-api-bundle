@@ -1,0 +1,23 @@
+{
+	"name": "recognize/google-api-bundle",
+	"type": "symfony-bundle",
+	"description": "Symfony2 RecognizeGoogleApiBundle",
+	"keywords": ["recognize-google-api-bundle", "RecognizeGoogleApiBundle"],
+	"homepage": "http://www.recognize.nl",
+	"authors": [
+		{
+			"name": "Nick Obermeijer",
+			"email": "nick@recognize.nl",
+			"homepage": "http://www.recognize.nl/"
+		}
+	],
+	"require": {
+		"recognize/extra-bundle": "dev-master",
+		"sensio/framework-extra-bundle": "~3.0"
+	},
+	"target-dir": "Recognize/GoogleApiBundle",
+	"autoload": {
+		"psr-0": { "Recognize\\GoogleApiBundle": "" }
+	},
+	"minimum-stability": "alpha"
+}
