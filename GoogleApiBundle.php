@@ -4,6 +4,6 @@ namespace Recognize\GoogleApiBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class GoogleApiBundle extends Bundle{
+class RecognizeGoogleApiBundle extends Bundle{
 
 }
