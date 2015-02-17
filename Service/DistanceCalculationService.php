@@ -76,7 +76,8 @@ class DistanceCalculationService {
         $response = ContentService::getContents( $this->generateGoogleApiRequest(), array(),
             array('Content-type: application/json'));
 
-        return $this->parseDistanceResponse( $response )[0]->getDistance();
+		$results = $this->parseDistanceResponse( $response );
+        return $results[0]->getDistance();
     }
 
     /**
