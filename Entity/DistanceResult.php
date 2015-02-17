@@ -32,4 +32,11 @@ class DistanceResult {
         return $this->distance;
     }
 
+	/**
+	 * @param int|float $distance
+	 */
+	public function setDistance($distance) {
+		$this->distance = $distance;
+	}
+
 }

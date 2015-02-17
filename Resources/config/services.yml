@@ -1,5 +1,5 @@
 services:
       recognize_google_api.distance_calculation.service:
-            class: Recognize\GoogleApiBundle\Service\DistanceCalculationService;
+            class: Recognize\GoogleApiBundle\Service\DistanceCalculationService
       recognize_google_api.geocoding.service:
-             class: Recognize\GoogleApiBundle\Service\GeocodingService;
+             class: Recognize\GoogleApiBundle\Service\GeocodingService

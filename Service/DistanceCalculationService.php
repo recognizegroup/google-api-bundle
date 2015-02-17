@@ -5,6 +5,7 @@ use Recognize\ExtraBundle\Service\ContentService;
 use Recognize\GoogleApiBundle\Entity\DistanceResult;
 use Recognize\GoogleApiBundle\Entity\LatLng;
 use Recognize\GoogleApiBundle\Entity\Location as Location;
+use Recognize\GoogleApiBundle\Utils\DistanceConverter;
 
 class DistanceCalculationService {
 
@@ -25,11 +26,12 @@ class DistanceCalculationService {
     /**
      * Calculate the driving distance between multiple locations
      *
-     * @param mixed[] $origin
-     * @param mixed[] $destination
+     * @param string|array $origins
+     * @param string|array $destinations
      * @return DistanceResult[]
      */
     public function calculateMultipleDistancesInMeters($origins, $destinations){
+		$origins = (!is_array($origins)) ? array($origins) : $origins;
 
         // Allow both strings, arrays containing lat long pairs and locations
         $this->origins = $this->convertDataToLocations( $origins );
@@ -42,6 +44,19 @@ class DistanceCalculationService {
 
         return $this->parseDistanceResponse( $response );
     }
+
+	/**
+	 * @param string|array $origins
+	 * @param string|array $destinations
+	 * @return DistanceResult[]
+	 */
+	public function calculateMultipleDistancesInKm($origins, $destinations) {
+		$results = $this->calculateMultipleDistancesInMeters($origins, $destinations);
+		foreach($results as &$result) {
+			$result->setDistance(DistanceConverter::convertMetersToKm($result->getDistance()));
+		}
+		return $results;
+	}
 
     /**
      * Calculate the driving distance between two locations
