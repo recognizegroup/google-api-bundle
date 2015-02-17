@@ -59,6 +59,13 @@ class Location {
     }
 
     /**
+     * @param mixed $latlng
+     */
+    public function setGeoLocation($latlng){
+        $this->latlng = $latlng;
+    }
+
+    /**
      * @return string
      */
     public function getCountry(){
@@ -94,10 +101,10 @@ class Location {
     }
 
     /**
-     * @param LatLng $latlng
+     * @return mixed
      */
-    public function setGeoLocation(LatLng $latlng){
-        $this->latlng = $latlng;
+    public function getGeoLocation(){
+        return $this->latlng;
     }
 
     /**
