@@ -8,7 +8,7 @@ class Location {
     /** @var string $zipcode */
     private $zipcode
 
-    /** @var LatLng */;
+    /** @var /Recognize/GoogleApiBundle/Entity/LatLng */;
     private $latlng;
 
     /**
