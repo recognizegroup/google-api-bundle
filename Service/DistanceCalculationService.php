@@ -10,6 +10,7 @@ use Recognize\GoogleApiBundle\Utils\DistanceConverter;
 class DistanceCalculationService {
 
     private $apiurl = "http://maps.googleapis.com/maps/api/distancematrix/json?";
+    private $apikey = null;
 
     /** @var Location[] $origin */
     private $origins;
@@ -22,6 +23,19 @@ class DistanceCalculationService {
 
     /** @var mixed[] $destinationsinput */
     private $originsinput;
+
+    /**
+     * Parse the configuration
+     *
+     * @param null $config
+     */
+    public function __construct($config = null){
+        if( is_null($config) === false ){
+            if( is_string($config['api_key']) === true ){
+                $this->apikey = $config['api_key'];
+            }
+        }
+    }
 
     /**
      * Calculate the driving distance between multiple locations
@@ -114,6 +128,11 @@ class DistanceCalculationService {
                 if( $i + 1 < $length) {
                     $url .= "|";
                 }
+            }
+
+            // Add the api key if set
+            if( is_string( $this->apikey ) == true ){
+                $url .= "&key=" . $this->apikey;
             }
 
             $url .= "&sensor=false";

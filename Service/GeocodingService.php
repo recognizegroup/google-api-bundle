@@ -9,6 +9,26 @@ class GeocodingService {
 
     private $apiurl = "http://maps.googleapis.com/maps/api/geocode/json?";
 
+    private $apikey = null;
+    private $locale = null;
+
+    /**
+     * Parse the configuration
+     *
+     * @param null $config
+     */
+    public function __construct($config = null){
+        if( is_null($config) === false ){
+            if( is_string($config['api_key']) === true ){
+                $this->apikey = $config['api_key'];
+            }
+
+            if( is_string($config['default_locale']) === true && $config['default_locale'] !== "en" ){
+                $this->locale = $config['default_locale'];
+            }
+        }
+    }
+
     /**
      * Finds an address using a latitude-longitude pair
      *
@@ -16,8 +36,7 @@ class GeocodingService {
      * @return Location
      */
     public function findAddressForLatLng(LatLng $latlng){
-        $url = $this->apiurl;
-        $url .= "latlng=" . $latlng->getLatitude() . "," . $latlng->getLongitude();
+        $url = $this->generateGoogleApiUrl( "latlng=" . $latlng->getLatitude() . "," . $latlng->getLongitude() );
 
         $response = ContentService::getContents( $url, array(),
             array('Content-type: application/json'));
@@ -32,14 +51,37 @@ class GeocodingService {
      * @return LatLng
      */
     public function findLatLngForAddress(Location $location){
-        $url = $this->apiurl;
-        $url .= "address=" . $location->toString();
+        $url = $this->generateGoogleApiUrl( "address=" . $location->toString() );
 
         $response = ContentService::getContents( $url, array(),
             array('Content-type: application/json'));
 
         $foundlocation = $this->parseGeocodingResponse( $response );
         return $foundlocation->getGeoLocation();
+    }
+
+    /**
+     * Generates a correct google api url
+     *
+     * @param $firstparameter
+     * @return string
+     */
+    protected function generateGoogleApiUrl( $firstparameter ){
+        $url = $this->apiurl;
+        $url .= $firstparameter;
+
+        // Add the api key if set
+        if( is_string( $this->apikey ) == true ){
+            $url .= "&key=" . $this->apikey;
+        }
+
+        // Add the language if set
+        if( is_string( $this->locale ) == true ){
+            $url .= "&language=" . $this->locale;
+        }
+
+
+        return $url;
     }
 
     /**
