@@ -34,10 +34,7 @@ class DistanceCalculationService {
 		$origins = (!is_array($origins)) ? array($origins) : $origins;
 
         // Allow both strings, arrays containing lat long pairs and locations
-        $this->origins = $this->convertDataToLocations( $origins );
-        $this->originsinput = $origins;
-        $this->destinations = $this->convertDataToLocations( $destinations );
-        $this->destinationsinput = $destinations;
+        $this->setOriginsAndDestinations($origins, $destinations);
 
         $response = ContentService::getContents( $this->generateGoogleApiRequest(), array(),
             array('Content-type: application/json'));
@@ -68,16 +65,26 @@ class DistanceCalculationService {
     public function calculateDistanceInMeters($origin, $destination){
 
         // Allow both strings, arrays containing lat long pairs and locations
-        $this->origins = array( $this->convertDataToLocation( $origin ) );
-        $this->originsinput = array( $origin );
-        $this->destinations = array( $this->convertDataToLocation( $destination ) );
-        $this->destinationsinput = array( $destination );
+       $this->setOriginsAndDestinations(array($origin), array($destination));
 
         $response = ContentService::getContents( $this->generateGoogleApiRequest(), array(),
             array('Content-type: application/json'));
 
 		$results = $this->parseDistanceResponse( $response );
         return $results[0]->getDistance();
+    }
+
+    /**
+     * Set the origins and the destinations
+     *
+     * @param $origins
+     * @param $destinations
+     */
+    public function setOriginsAndDestinations($origins, $destinations){
+        $this->origins = $this->convertDataToLocations( $origins );
+        $this->originsinput = $origins;
+        $this->destinations = $this->convertDataToLocations( $destinations );
+        $this->destinationsinput = $destinations;
     }
 
     /**
@@ -185,7 +192,7 @@ class DistanceCalculationService {
      * @param $jsondata
      * @return DistanceResult[]
      */
-    protected function parseDistanceResponse( $jsondata ){
+    public function parseDistanceResponse( $jsondata ){
         $obj = json_decode( $jsondata );
 
         $returndistances = array();

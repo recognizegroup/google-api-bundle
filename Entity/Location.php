@@ -154,7 +154,7 @@ class Location {
 
             // Replace all the spaces with + signs
             $string = str_replace(" ", "+", $string);
-            return preg_replace('/  +/', '+', $string);
+            return preg_replace('/\++/', '+', $string);
         }
     }
 }

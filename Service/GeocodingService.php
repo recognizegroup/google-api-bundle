@@ -48,7 +48,7 @@ class GeocodingService {
      * @param $jsondata
      * @return Location
      */
-    protected function parseGeocodingResponse( $jsondata ){
+    public function parseGeocodingResponse( $jsondata ){
         $obj = json_decode( $jsondata );
 
         //var_dump( $jsondata );
