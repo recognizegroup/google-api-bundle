@@ -28,6 +28,14 @@ class GeocodingServiceTest extends \PHPUnit_Framework_TestCase {
         $this->emptyloc = $emptyloc;
     }
 
+    public function testConstruct(){
+        $apikey = "TESTKEY";
+        $service = new GeocodingService(array("api_key" => $apikey, "default_locale" => "en"));
+        $emptyservice = new GeocodingService();
+        $this->assertNotEquals($emptyservice, $service);
+
+    }
+
     public function testFaultyAddressParsing(){
         $this->assertEquals($this->emptyloc, $this->service->parseGeocodingResponse(null));
         $this->assertEquals($this->emptyloc, $this->service->parseGeocodingResponse(""));
@@ -118,5 +126,29 @@ class GeocodingServiceTest extends \PHPUnit_Framework_TestCase {
         "geometry":{"location":{"lat":51.1515, "lng": -20.052}}}]}';
         $testloc->setAddress("Stationsstraat 11");
         $this->assertEquals($testloc, $this->service->parseGeocodingResponse($json), "Address not retrieved from JSON" );
+    }
+
+    public function testIntegrationSendingData(){
+        $location = new Location();
+        $location->setAddress("Stationsstraat 11");
+        $location->setZipcode("7607 GX");
+        $location->setProvince("Overijssel");
+        $location->setCity("Almelo");
+        $location->setCountry("Netherlands");
+
+        $latlng = $this->service->findLatLngForAddress( $location );
+        $this->assertFalse( is_null($latlng) );
+
+        $location->setGeoLocation( $latlng );
+        $newlocation = $this->service->findAddressForLatLng( $latlng );
+        $this->assertEquals($newlocation, $location);
+    }
+
+    public function testIntegrationSendingLocalizedData(){
+        $translatedservice = new GeocodingService(array("default_locale" => "nl", "api_key" => null));
+
+        $location = $translatedservice->findAddressForLatLng( new LatLng(52.3583890,6.6565540) );
+
+        $this->assertEquals( $location->getCountry(), "Nederland", "Address data not localized properly" );
     }
 }

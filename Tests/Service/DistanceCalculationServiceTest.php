@@ -1,5 +1,7 @@
 <?php
 use Recognize\GoogleApiBundle\Entity\DistanceResult;
+use Recognize\GoogleApiBundle\Entity\LatLng;
+use Recognize\GoogleApiBundle\Entity\Location;
 use Recognize\GoogleApiBundle\Service\DistanceCalculationService;
 
 class DistanceCalculationServiceTest extends \PHPUnit_Framework_TestCase {
@@ -18,6 +20,14 @@ class DistanceCalculationServiceTest extends \PHPUnit_Framework_TestCase {
         $this->defaultnode = new DistanceResult("7151EM", "7607GX", 0);
         $this->realnode = new DistanceResult("7151EM", "7607GX", 1200);
         $this->service = new DistanceCalculationService();
+    }
+
+    public function testConstruct(){
+        $apikey = "TESTKEY";
+        $service = new DistanceCalculationService(array("api_key" => $apikey, "default_locale" => "en"));
+        $emptyservice = new DistanceCalculationService();
+        $this->assertNotEquals($emptyservice, $service);
+
     }
 
     public function testFaultyResponse(){
@@ -45,13 +55,45 @@ class DistanceCalculationServiceTest extends \PHPUnit_Framework_TestCase {
         {"distance":{"value": 1200}, "status": "OK"}]}]}';
         $this->assertEquals($data, $this->service->parseDistanceResponse($json), "Single origin and multiple destinations not parsed properly" );
 
+
+        $loc = new Location();
+        $loc->setGeoLocation(new LatLng(7.151, -7.607));
+
+        $data = array();
         $data[] = $this->realnode;
-        $data[] = $secondresult;
-        $this->service->setOriginsAndDestinations(array("7151EM", "7151EM"), array("7607GX", array(7.151, -7.607)));
+        $data[] = new DistanceResult("7151EM", $loc, 1200);
+        $data[] = $this->realnode;
+        $data[] = new DistanceResult("7151EM", $loc, 1200);
+        $this->service->setOriginsAndDestinations(array("7151EM", "7151EM"), array("7607GX", $loc));
         $json = '{"status": "OK", "rows":[{"elements":[{"distance":{"value": 1200}, "status": "OK"},
         {"distance":{"value": 1200}, "status": "OK"}]},{"elements":[{"distance":{"value": 1200}, "status": "OK"},
         {"distance":{"value": 1200}, "status": "OK"}]}]}';
         $this->assertEquals($data, $this->service->parseDistanceResponse($json), "Multiple origins and destinations not parsed properly" );
+    }
+
+    public function testIntegrationSendingData(){
+        $result = $this->service->calculateDistanceInMeters("7607 GX", "7548 RZ");
+        $this->assertNotEquals( $result, 0 );
+
+        $results = $this->service->calculateMultipleDistancesInMeters(array("7607 GX"), array("7548 RZ"));
+        foreach( $results as $result ){
+            /** @var DistanceResult $result */
+            $this->assertNotEquals( $result->getDistance(), 0 );
+        }
+
+        $results = $this->service->calculateMultipleDistancesInMeters(array("7607 GX"), array("AFSDFWEFDSEFSD"));
+        foreach( $results as $result ){
+            /** @var DistanceResult $result */
+            $this->assertEquals( $result->getDistance(), 0 );
+        }
+
+        $resultskm = $this->service->calculateMultipleDistancesInKm(array("7607 GX", "7607 GX"), array("7548 RZ", "7548 RZ"));
+        foreach( $resultskm as $result ){
+            /** @var DistanceResult $result */
+            $this->assertNotEquals( $result->getDistance(), 0 );
+
+            break;
+        }
     }
 
 }
