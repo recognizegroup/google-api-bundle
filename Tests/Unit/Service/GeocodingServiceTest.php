@@ -127,28 +127,4 @@ class GeocodingServiceTest extends \PHPUnit_Framework_TestCase {
         $testloc->setAddress("Stationsstraat 11");
         $this->assertEquals($testloc, $this->service->parseGeocodingResponse($json), "Address not retrieved from JSON" );
     }
-
-    public function testIntegrationSendingData(){
-        $location = new Location();
-        $location->setAddress("Stationsstraat 11");
-        $location->setZipcode("7607 GX");
-        $location->setProvince("Overijssel");
-        $location->setCity("Almelo");
-        $location->setCountry("Netherlands");
-
-        $latlng = $this->service->findLatLngForAddress( $location );
-        $this->assertFalse( is_null($latlng) );
-
-        $location->setGeoLocation( $latlng );
-        $newlocation = $this->service->findAddressForLatLng( $latlng );
-        $this->assertEquals($newlocation, $location);
-    }
-
-    public function testIntegrationSendingLocalizedData(){
-        $translatedservice = new GeocodingService(array("default_locale" => "nl", "api_key" => null));
-
-        $location = $translatedservice->findAddressForLatLng( new LatLng(52.3583890,6.6565540) );
-
-        $this->assertEquals( $location->getCountry(), "Nederland", "Address data not localized properly" );
-    }
 }

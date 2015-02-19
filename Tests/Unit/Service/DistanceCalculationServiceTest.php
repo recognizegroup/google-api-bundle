@@ -70,30 +70,4 @@ class DistanceCalculationServiceTest extends \PHPUnit_Framework_TestCase {
         {"distance":{"value": 1200}, "status": "OK"}]}]}';
         $this->assertEquals($data, $this->service->parseDistanceResponse($json), "Multiple origins and destinations not parsed properly" );
     }
-
-    public function testIntegrationSendingData(){
-        $result = $this->service->calculateDistanceInMeters("7607 GX", "7548 RZ");
-        $this->assertNotEquals( $result, 0 );
-
-        $results = $this->service->calculateMultipleDistancesInMeters(array("7607 GX"), array("7548 RZ"));
-        foreach( $results as $result ){
-            /** @var DistanceResult $result */
-            $this->assertNotEquals( $result->getDistance(), 0 );
-        }
-
-        $results = $this->service->calculateMultipleDistancesInMeters(array("7607 GX"), array("AFSDFWEFDSEFSD"));
-        foreach( $results as $result ){
-            /** @var DistanceResult $result */
-            $this->assertEquals( $result->getDistance(), 0 );
-        }
-
-        $resultskm = $this->service->calculateMultipleDistancesInKm(array("7607 GX", "7607 GX"), array("7548 RZ", "7548 RZ"));
-        foreach( $resultskm as $result ){
-            /** @var DistanceResult $result */
-            $this->assertNotEquals( $result->getDistance(), 0 );
-
-            break;
-        }
-    }
-
 }
