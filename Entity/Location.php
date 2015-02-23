@@ -147,7 +147,7 @@ class Location {
             if( is_null($this->country) == false ){
                 if( strlen($string) > 0 && substr($string, -1) !== "," ){
                     $string .= ",";
-                }
+                } 
 
                 $string .= $this->country;
             }
