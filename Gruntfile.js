@@ -15,5 +15,5 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.registerTask('default', ['grunt-contrib-jasmine']);
+    grunt.registerTask('default', ['jasmine']);
 };
