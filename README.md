@@ -2,7 +2,6 @@ RecognizeGoogleApiBundle
 ========================
 
 Use the google apis to find addresses, the driving distance between two locations and more!
-
 Installation
 -----------
 
