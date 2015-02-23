@@ -8,12 +8,12 @@ To set up the testing enviroment you have to do two things
 
   * [Install phpunit][1]
   
-  * [Move the pre-commit hook to git](#pre-commit-hook)
+  * Install the pre-commit hook
 
 
 [1]:  https://phpunit.de/manual/current/en/installation.html
 
-##Move the pre-commit hook<a name="pre-commit-hook"></a>
+##Installing the pre-commit hook
 
 Run the following command in the root directory of this project
 
