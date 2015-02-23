@@ -94,3 +94,43 @@ If you want to disable the unit tests before a commit, you can use the following
 ```sh
 git commit --no-verify -m "Commit message!"
 ```
+
+Testing with php and javascript
+------------------------
+
+First, make sure you have npm and grunt-cli installed on your machine.
+
+```sh
+npm install -g grunt-cli
+```
+
+Then, run this command to install all the required packages locally
+
+```sh
+npm install grunt --save-dev
+npm install grunt-contrib-jasmine --save-dev
+```
+
+Make sure to add node_modules to the .gitignore file so that they aren't loaded onto the server.
+
+##Installing the pre-commit hook
+
+To test with php and javascript before each commit, execute the following command
+
+**Linux and Mac:**
+```sh
+cp .hooks/pre-commit-phpunit-jasmine .git/hooks/pre-commit
+chmod 755 .git/hooks/pre-commit
+```
+
+**Windows:**
+```sh
+copy .hooks/pre-commit-phpunit-jasmine .git/hooks/pre-commit
+```
+
+This will make sure the unit tests for phpunit and jasmine will be run before each commit.
+If you want to disable the unit tests before a commit, you can use the following command
+
+```sh
+git commit --no-verify -m "Commit message!"
+```

@@ -1,0 +1,5 @@
+#!/bin/sh
+phpunit -c phpunit.xml.dist --testsuite unit
+if [ "$?" -eq "0" ]; then
+    grunt jasmine
+fi
