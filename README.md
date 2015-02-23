@@ -1,12 +1,12 @@
 Recognize Google Api Bundle
 ========================
 
-Setting up tests
+Testing
 --------------
 
 To set up the testing enviroment you have to do two things
 
-  * [Install phpunit](1)
+  * [Install phpunit][1]
   
   * [Move the pre-commit hook to git](#pre-commit-hook)
 
@@ -17,9 +17,15 @@ To set up the testing enviroment you have to do two things
 
 Run the following command in the root directory of this project
 
+Linux and Mac:
 ```
-mv .hooks/pre-commit-phpunit .git/hooks/pre-commit
+cp .hooks/pre-commit-phpunit .git/hooks/pre-commit
 chmod 755 .git/hooks/pre-commit
+```
+
+Windows:
+```
+copy .hooks/pre-commit-phpunit .git/hooks/pre-commit
 ```
 
 This will make sure the unit tests will be run before each commit.
