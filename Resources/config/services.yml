@@ -1,7 +1,7 @@
 services:
       recognize_google_api.distance_calculation.service:
             class: Recognize\GoogleApiBundle\Service\DistanceCalculationService
-            arguments: [%recognize_google_api.config%]
+            arguments: ['%recognize_google_api.config%']
       recognize_google_api.geocoding.service:
             class: Recognize\GoogleApiBundle\Service\GeocodingService
-            arguments: [%recognize_google_api.config%]
+            arguments: ['%recognize_google_api.config%']
