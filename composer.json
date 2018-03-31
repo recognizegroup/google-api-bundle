@@ -18,7 +18,7 @@
 	],
 	"require": {
 		"recognize/extra-bundle": "dev-symfony3.0",
-		"sensio/framework-extra-bundle": "^3.0"
+		"sensio/framework-extra-bundle": ">=3.0"
 	},
 	"target-dir": "Recognize/GoogleApiBundle",
 	"autoload": {
