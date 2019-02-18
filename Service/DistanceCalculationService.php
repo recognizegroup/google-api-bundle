@@ -5,7 +5,7 @@ use Recognize\GoogleApiBundle\Entity\Location as Location;
 
 class DistanceCalculationService {
 
-    private $apiurl = "http://maps.googleapis.com/maps/api/distancematrix/json?";
+    private $apiurl = "https://maps.googleapis.com/maps/api/distancematrix/json?";
 
     /** @var Location $origin */
     private $origin;
