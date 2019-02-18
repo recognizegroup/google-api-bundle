@@ -9,7 +9,7 @@ use Recognize\GoogleApiBundle\Utils\DistanceConverter;
 
 class DistanceCalculationService {
 
-    private $apiurl = "http://maps.googleapis.com/maps/api/distancematrix/json?";
+    private $apiurl = "https://maps.googleapis.com/maps/api/distancematrix/json?";
     private $apikey = null;
 
     /** @var Location[] $origin */
