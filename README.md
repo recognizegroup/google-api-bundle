@@ -14,7 +14,7 @@ Add the bundle to your composer.json
 	"repositories": [
 		{
 			"type": "git",
-			"url":  "git@bitbucket.org:recognize/google-api-bundle.git"
+			"url":  "https://github.com/recognizegroup/google-api-bundle.git"
 		}
 	],
 	 "require": {
